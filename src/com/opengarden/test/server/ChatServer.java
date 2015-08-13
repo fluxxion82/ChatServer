@@ -58,6 +58,13 @@ public class ChatServer implements OnChatCloseListener, MessageListener {
 
 		}
     			
+		try {
+			System.out.println(Integer.valueOf(System.getenv("PORT")));
+			
+		} catch (Exception e){
+			
+		}
+		
     	ChatServer server = new ChatServer(portNumber);
 		server.start();
     }
