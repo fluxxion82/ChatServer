@@ -43,8 +43,8 @@ public class ChatServer implements OnChatCloseListener, MessageListener {
 		switch (args.length) {
 		case 1:
 			try {
-				//portNumber = Integer.parseInt(args[0]);
-				portNumber = Integer.valueOf(System.getenv("PORT"));
+				portNumber = Integer.parseInt(args[0]);
+				//portNumber = Integer.valueOf(System.getenv("PORT"));
 			} catch (Exception e) {
 				System.out.println("Invalid port number.");
 				System.out.println("Usage is: > java Server [portNumber]");
