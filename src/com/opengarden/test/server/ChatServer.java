@@ -39,7 +39,7 @@ public class ChatServer implements OnChatCloseListener, MessageListener {
 	 */
     public static void main(String[] args) {
     	// start server on port 4444 unless a PortNumber is specified
-		int portNumber = 443;
+		int portNumber = 4444;
 		switch (args.length) {
 		case 1:
 			try {
