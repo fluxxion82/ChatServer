@@ -43,7 +43,8 @@ public class ChatServer implements OnChatCloseListener, MessageListener {
 		switch (args.length) {
 		case 1:
 			try {
-				portNumber = Integer.parseInt(args[0]);
+				//portNumber = Integer.parseInt(args[0]);
+				portNumber = Integer.valueOf(System.getenv("PORT"));
 			} catch (Exception e) {
 				System.out.println("Invalid port number.");
 				System.out.println("Usage is: > java Server [portNumber]");
@@ -68,8 +69,8 @@ public class ChatServer implements OnChatCloseListener, MessageListener {
         try {
             mServerSocket = new ServerSocket(mPort);
 
-            ChatWindow chatWindow = new ChatWindow();
-            chatWindow.open(ChatServer.this, this);
+            //ChatWindow chatWindow = new ChatWindow();
+            //chatWindow.open(ChatServer.this, this);
             
             System.out.println("Server started. Listening to the port " + mPort + ". Waitng for a client to connect.");
             
@@ -86,7 +87,7 @@ public class ChatServer implements OnChatCloseListener, MessageListener {
 
  				ArrayList<MessageListener> listeners = new ArrayList<MessageListener>();
  				listeners.add(this);
- 				listeners.add(chatWindow);
+ 				//listeners.add(chatWindow);
 	            ClientThread receiver = new ClientThread(clientSocket, listeners);
 	            
 	            mClients.add(receiver);
