@@ -83,6 +83,8 @@ public class ChatMessage {
 			msg = time + " " + mUsername + ": " + mMessage + "\n";
 
 			break;
+		default: msg = "Invalid operation." 
+            		break; 		
 		}
 		
 		
