@@ -1,4 +1,4 @@
-package com.opengarden.test.server.dao;
+package ai.sterling.test.server.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.opengarden.test.server.model.ChatMessage;
+import ai.sterling.test.server.model.ChatMessage;
 
 /*
  * Don't have a database nor persisting messages on server,

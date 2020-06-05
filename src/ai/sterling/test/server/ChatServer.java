@@ -1,4 +1,4 @@
-package com.opengarden.test.server;
+package ai.sterling.test.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.opengarden.test.server.model.ChatMessage;
-import com.opengarden.test.server.view.ChatWindow;
-import com.opengarden.test.server.view.ChatWindow.OnChatCloseListener;
+import ai.sterling.test.server.model.ChatMessage;
+import ai.sterling.test.server.view.ChatWindow;
+import ai.sterling.test.server.view.ChatWindow.OnChatCloseListener;
 
 public class ChatServer implements OnChatCloseListener, MessageListener {
 	private ServerSocket mServerSocket = null;

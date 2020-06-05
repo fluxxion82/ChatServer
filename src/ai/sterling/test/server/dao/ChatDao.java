@@ -1,8 +1,8 @@
-package com.opengarden.test.server.dao;
+package ai.sterling.test.server.dao;
 
 import java.util.List;
 
-import com.opengarden.test.server.model.ChatMessage;
+import ai.sterling.test.server.model.ChatMessage;
 
 /*
  * Don't have a database nor persisting messages on server,

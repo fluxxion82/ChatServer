@@ -1,4 +1,4 @@
-package com.opengarden.test.server.view;
+package ai.sterling.test.server.view;
 
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -14,8 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.opengarden.test.server.MessageListener;
-import com.opengarden.test.server.model.ChatMessage;
+import ai.sterling.test.server.MessageListener;
+import ai.sterling.test.server.model.ChatMessage;
 
 public class ChatWindow extends JFrame implements MessageListener {
 	private static final long serialVersionUID = 1L;
@@ -68,7 +68,7 @@ public class ChatWindow extends JFrame implements MessageListener {
 			public void actionPerformed(ActionEvent e) {
 				String message = mChatBox.getText();
 
-				ChatMessage msg = new ChatMessage(0, "Server", ChatMessage.MESSAGE, message, new Date().getTime());
+				ChatMessage msg = new ChatMessage(0, "Server", ChatMessage.Companion.getMESSAGE(), message, new Date().getTime());
 				mMessageListener.displayMessage(msg);
 				displayMessage(msg);
 

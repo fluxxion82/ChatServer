@@ -1,8 +1,8 @@
-package com.opengarden.test.server;
+package ai.sterling.test.server;
 
 import java.util.List;
 
-import com.opengarden.test.server.model.ChatMessage;
+import ai.sterling.test.server.model.ChatMessage;
 
 public interface MessageListener {
 	public void displayMessage(List<ChatMessage> message);

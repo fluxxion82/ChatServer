@@ -1,4 +1,4 @@
-package com.opengarden.test.server;
+package ai.sterling.test.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,9 +7,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
-import com.opengarden.test.server.dao.ChatDao;
-import com.opengarden.test.server.dao.ChatMessageDao;
-import com.opengarden.test.server.model.ChatMessage;
+import ai.sterling.test.server.dao.ChatDao;
+import ai.sterling.test.server.dao.ChatMessageDao;
+import ai.sterling.test.server.model.ChatMessage;
 
 public class ClientThread extends Thread {
 	private PrintWriter mOutWriter;
