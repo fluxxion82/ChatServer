@@ -13,75 +13,77 @@ import com.opengarden.test.server.model.ChatMessage;
 
 public class ClientThread extends Thread {
 	private PrintWriter mOutWriter;
-    private BufferedReader bufferedReader;
-    private Socket mClientSocket;
-    private List<MessageListener> mMessageListeners;
-    private ChatDao mChatDao;
-    
-    private String mUsername;
-    private boolean keepGoing = true;
- 	public int id; // my unique id (easier for disconnecting)
- 	
- 	
-    public ClientThread(Socket clientSocket, List<MessageListener> messageListeners) {
-    	mMessageListeners = messageListeners;
-        mClientSocket = clientSocket;
-        mChatDao = new ChatMessageDao();
-        
-        id = ++ChatServer.uniqueId;
-        try {
-            InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
-            mOutWriter = new PrintWriter(clientSocket.getOutputStream(), true);
-            bufferedReader = new BufferedReader(inputStreamReader);
-            
-            if (bufferedReader.ready()) {
-            	String msg = bufferedReader.readLine(); // Read the chat message to get username
-            	mChatDao.storeChatMessage(msg);
-            	ChatMessage msgObj = mChatDao.getChatMessage();
-            	
-            	mUsername = msgObj.getUsername();
-            	for(MessageListener listener : mMessageListeners) {
-            		listener.displayMessage(msgObj);
-            	}
-                
-            	// so i don't have to worry about finding the right messages later
-            	mChatDao.deleteAllMessages(); 
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	private BufferedReader bufferedReader;
+	private Socket mClientSocket;
+	private List<MessageListener> mMessageListeners;
+	private ChatDao mChatDao;
 
-    @Override
-    public void run() {
-        String message;
-        
-        while (keepGoing) {
-            try {
-                if (bufferedReader.ready()) {
-                    message = bufferedReader.readLine(); // Read the chat message.
-                    mChatDao.storeChatMessage(message);
-                    List<ChatMessage> messageList = mChatDao.getAllMessages();
+	private String mUsername;
+	private boolean keepGoing = true;
+	public int id; // my unique id (easier for disconnecting)
 
-                    for(MessageListener listener : mMessageListeners) {
-                		listener.displayMessage(messageList);
-                	}
-                    
-                 // so i don't have to worry about finding the right messages later
-                    mChatDao.deleteAllMessages();
-                }
-            } catch (IOException ex) {
-                System.out.println("Problem in message reading");
-                ex.printStackTrace();
-            }
+	public ClientThread(Socket clientSocket, List<MessageListener> messageListeners) {
+		mMessageListeners = messageListeners;
+		mClientSocket = clientSocket;
+		mChatDao = new ChatMessageDao();
 
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException ie) {
-            }
-        }
-    }
+		id = ++ChatServer.uniqueId;
+		try {
+			InputStreamReader inputStreamReader = new InputStreamReader(clientSocket.getInputStream());
+			mOutWriter = new PrintWriter(clientSocket.getOutputStream(), true);
+			bufferedReader = new BufferedReader(inputStreamReader);
 
+			if (bufferedReader.ready()) {
+				String msg = bufferedReader.readLine(); // Read the chat message
+														// to get username
+				mChatDao.storeChatMessage(msg);
+				ChatMessage msgObj = mChatDao.getChatMessage();
+
+				mUsername = msgObj.getUsername();
+				for (MessageListener listener : mMessageListeners) {
+					listener.displayMessage(msgObj);
+				}
+
+				// so i don't have to worry about finding the right messages
+				// later
+				mChatDao.deleteAllMessages();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void run() {
+		String message;
+
+		while (keepGoing) {
+			try {
+				if (bufferedReader.ready()) {
+					message = bufferedReader.readLine(); // Read the chat
+															// message.
+					mChatDao.storeChatMessage(message);
+					List<ChatMessage> messageList = mChatDao.getAllMessages();
+
+					for (MessageListener listener : mMessageListeners) {
+						listener.displayMessage(messageList);
+					}
+
+					// so i don't have to worry about finding the right messages
+					// later
+					mChatDao.deleteAllMessages();
+				}
+			} catch (IOException ex) {
+				System.out.println("Problem in message reading");
+				ex.printStackTrace();
+			}
+
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ie) {
+			}
+		}
+	}
 
 	public boolean writeMsg(String message) {
 		// if Client is still connected send the message to it
@@ -89,12 +91,12 @@ public class ClientThread extends Thread {
 			kill();
 			return false;
 		}
-		
+
 		// Print the message on output stream.
-		mOutWriter.println(message); 
+		mOutWriter.println(message);
 		return true;
 	}
-    
+
 	public void kill() {
 		keepGoing = false;
 	}
@@ -103,5 +105,4 @@ public class ClientThread extends Thread {
 	public String getUsername() {
 		return mUsername;
 	}
-
 }

@@ -16,16 +16,16 @@ import com.opengarden.test.server.model.ChatMessage;
 public class ChatMessageDao implements ChatDao {
 	private List<ChatMessage> mMessageList;
 	private ChatMessage mChatMessage;
-	
+
 	public ChatMessageDao() {
 		mMessageList = new ArrayList<>();
 	}
-	
+
 	@Override
 	public void storeChatMessage(ChatMessage message) {
 		mChatMessage = message;
 	}
-	
+
 	@Override
 	public ChatMessage getChatMessage() {
 		return mChatMessage;
@@ -34,24 +34,24 @@ public class ChatMessageDao implements ChatDao {
 	@Override
 	public void storeChatMessage(String chatJson) {
 		Gson gson = new Gson();
-        JsonElement jelem = gson.fromJson(chatJson, JsonElement.class);
+		JsonElement jelem = gson.fromJson(chatJson, JsonElement.class);
 
-        if(jelem.isJsonArray()) {
-        	JsonArray array = jelem.getAsJsonArray();
-            if(array != null) {
-                for (JsonElement je : array) {
-                	ChatMessage msg = new Gson().fromJson(je, ChatMessage.class);
-                	mMessageList.add(msg);
-                }
-            }
-        } else {
-        	ChatMessage msg = gson.fromJson(jelem, ChatMessage.class);
-        	mMessageList.add(msg);
-        }
-        
-        if(mMessageList.size() == 1) { //convenience 
-        	mChatMessage = mMessageList.get(0);
-        }
+		if (jelem.isJsonArray()) {
+			JsonArray array = jelem.getAsJsonArray();
+			if (array != null) {
+				for (JsonElement je : array) {
+					ChatMessage msg = new Gson().fromJson(je, ChatMessage.class);
+					mMessageList.add(msg);
+				}
+			}
+		} else {
+			ChatMessage msg = gson.fromJson(jelem, ChatMessage.class);
+			mMessageList.add(msg);
+		}
+
+		if (mMessageList.size() == 1) { // convenience
+			mChatMessage = mMessageList.get(0);
+		}
 	}
 
 	@Override
@@ -64,7 +64,4 @@ public class ChatMessageDao implements ChatDao {
 		mMessageList.clear();
 		mChatMessage = null;
 	}
-	
-
-
 }

@@ -17,79 +17,79 @@ import javax.swing.JTextArea;
 import com.opengarden.test.server.MessageListener;
 import com.opengarden.test.server.model.ChatMessage;
 
-public class ChatWindow extends JFrame implements MessageListener  {
+public class ChatWindow extends JFrame implements MessageListener {
 	private static final long serialVersionUID = 1L;
 	private JTextArea mChatView;
-    private JButton mSendButton;
-    private JButton mClearButton;
-    private JTextArea mChatBox;
-    private OnChatCloseListener mCloseListener;
-    private MessageListener mMessageListener;
-    
-    public interface OnChatCloseListener {
-    	public void onChatClose();
-    }
-    
-    public void open(OnChatCloseListener closeListener, MessageListener messageListener) {
-    	mCloseListener = closeListener;
-    	mMessageListener = messageListener;
-    	
-        initComponents();
+	private JButton mSendButton;
+	private JButton mClearButton;
+	private JTextArea mChatBox;
+	private OnChatCloseListener mCloseListener;
+	private MessageListener mMessageListener;
 
-        setWinodwCloseListnerToCloseSocket();
+	public interface OnChatCloseListener {
+		public void onChatClose();
+	}
 
-        initSenderAndReceiver();
-    }
+	public void open(OnChatCloseListener closeListener, MessageListener messageListener) {
+		mCloseListener = closeListener;
+		mMessageListener = messageListener;
 
-    private void initComponents() {
-        mChatView = new JTextArea(20, 46);
-        JScrollPane chatViewScrollPane = new JScrollPane(mChatView);
-        mChatBox = new JTextArea(5, 40);
-        JScrollPane chatBoxScrollPane = new JScrollPane(mChatBox);
-        mSendButton = new JButton("Send");
-        mClearButton = new JButton("Clear");
+		initComponents();
 
-        setResizable(false);
-        setTitle("Chat Server");
-        setSize(550, 500);
-        Container contentPane = getContentPane();
-        contentPane.setLayout(new FlowLayout());
-        contentPane.add(chatViewScrollPane);
-        contentPane.add(chatBoxScrollPane);
-        contentPane.add(mSendButton);
-        contentPane.add(mClearButton);
-        mChatView.setEditable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-    }
+		setWinodwCloseListnerToCloseSocket();
 
-    private void initSenderAndReceiver() {
-    	mSendButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	String message = mChatBox.getText();
+		initSenderAndReceiver();
+	}
 
-        		ChatMessage msg = new ChatMessage(0, "Server", ChatMessage.MESSAGE, message, new Date().getTime());
-            	mMessageListener.displayMessage(msg);
-            	displayMessage(msg);
+	private void initComponents() {
+		mChatView = new JTextArea(20, 46);
+		JScrollPane chatViewScrollPane = new JScrollPane(mChatView);
+		mChatBox = new JTextArea(5, 40);
+		JScrollPane chatBoxScrollPane = new JScrollPane(mChatBox);
+		mSendButton = new JButton("Send");
+		mClearButton = new JButton("Clear");
 
-                mChatBox.setText(""); //Clear the chat box
-            }
-        });
-    	
-    	mClearButton.addActionListener(new ActionListener(){
-    		public void actionPerformed(ActionEvent e) {
-    			mChatView.setText(""); //clear history
-    		}
-    	});
-    }
+		setResizable(false);
+		setTitle("Chat Server");
+		setSize(550, 500);
+		Container contentPane = getContentPane();
+		contentPane.setLayout(new FlowLayout());
+		contentPane.add(chatViewScrollPane);
+		contentPane.add(chatBoxScrollPane);
+		contentPane.add(mSendButton);
+		contentPane.add(mClearButton);
+		mChatView.setEditable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+	}
 
-    private void setWinodwCloseListnerToCloseSocket() {
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                mCloseListener.onChatClose();
-            }
-        });
-    }
+	private void initSenderAndReceiver() {
+		mSendButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String message = mChatBox.getText();
+
+				ChatMessage msg = new ChatMessage(0, "Server", ChatMessage.MESSAGE, message, new Date().getTime());
+				mMessageListener.displayMessage(msg);
+				displayMessage(msg);
+
+				mChatBox.setText(""); // Clear the chat box
+			}
+		});
+
+		mClearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mChatView.setText(""); // clear history
+			}
+		});
+	}
+
+	private void setWinodwCloseListnerToCloseSocket() {
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				mCloseListener.onChatClose();
+			}
+		});
+	}
 
 	@Override
 	public void displayMessage(ChatMessage message) {
@@ -98,7 +98,7 @@ public class ChatWindow extends JFrame implements MessageListener  {
 
 	@Override
 	public void displayMessage(List<ChatMessage> messageList) {
-		for(ChatMessage message : messageList) {
+		for (ChatMessage message : messageList) {
 			displayMessage(message);
 		}
 	}

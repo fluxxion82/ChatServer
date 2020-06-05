@@ -11,8 +11,12 @@ import com.opengarden.test.server.model.ChatMessage;
  */
 public interface ChatDao {
 	public void storeChatMessage(ChatMessage message);
+
 	public void storeChatMessage(String chatJson);
+
 	public ChatMessage getChatMessage();
+
 	public List<ChatMessage> getAllMessages();
+
 	public void deleteAllMessages();
 }
