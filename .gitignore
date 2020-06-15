@@ -3,6 +3,7 @@ bin/
 target/
 cache/
 .gitattributes
+.idea/
 
 # Ignore Gradle project-specific cache directory
 .gradle
