@@ -1,14 +1,18 @@
 include ':app'
-include ':javalogger'
+//include ':javalogger'
 include ':presentation:web'
 
 include ':domain', ':kinject'
-include ':logger'
+include ':logging:logger'
+include ':logging:platformlogger'
 //include ':multicore'
 
 project(":domain").projectDir = file("../KChatShared/domain")
 project(":kinject").projectDir = file("../KChatShared/kinject")
-project(":logger").projectDir = file("../KChatShared/logger")
+project(":logging:logger").projectDir = file("../KChatShared/logging/logger")
+project(":logging:platformlogger").projectDir = file("../KChatShared/logging/platformlogger")
 //project(":multicore").projectDir = file("../KChatShared/multicore")
 
 rootProject.name = 'KChatServer'
+
+includeBuild("../KChatShared/plugins")

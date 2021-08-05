@@ -1,5 +1,6 @@
 package ai.sterling.kchat.server
 
+import ai.sterling.logging.KLogger
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call
@@ -77,7 +78,8 @@ fun Application.module(testing: Boolean = false) {
              * sending messages to everyone or to specific people connected to the server.
              */
 
-            println("web socket route")
+            KLogger.d { "web socket route" }
+            println("web socet route")
             // First of all we get the session.
             val session = call.sessions.get<ChatSession>()
 
@@ -96,8 +98,10 @@ fun Application.module(testing: Boolean = false) {
                 // We starts receiving messages (frames).
                 // Since this is a coroutine. This coroutine is suspended until receiving frames.
                 // Once the connection is closed, this consumeEach will finish and the code will continue.
+                KLogger.d { "incoming" }
                 println("incoming")
                 incoming.consumeEach { frame ->
+                    KLogger.d { "consuming frames, $frame" }
                     println("consuming frames, $frame")
                     // Frames can be [Text], [Binary], [Ping], [Pong], [Close].
                     // We are only interested in textual messages, so we filter it.

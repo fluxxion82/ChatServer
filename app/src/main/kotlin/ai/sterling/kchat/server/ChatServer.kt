@@ -1,10 +1,11 @@
 package ai.sterling.kchat.server
 
 import ai.sterling.kchat.domain.chat.model.ChatMessage
+import ai.sterling.logging.KLogger
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
-import com.soywiz.klock.DateTime
+import kotlinx.datetime.Clock
 import io.ktor.http.cio.websocket.CloseReason
 import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.WebSocketSession
@@ -48,6 +49,8 @@ class ChatServer {
      * Handles that a member identified with a session id and a socket joined.
      */
     fun memberJoin(member: String, socket: WebSocketSession) {
+        KLogger.i { "member join, $member" }
+        println("member join, $member")
         // Checks if this user is already registered in the server and gives him/her a temporal name if required.
         memberNames.computeIfAbsent(member) { "user${usersCounter.incrementAndGet()}" }
 
@@ -62,6 +65,7 @@ class ChatServer {
     }
 
     suspend fun parseChatMessages(id: String, socket: WebSocketSession, text: String) {
+        KLogger.d { "json msg: $text" }
         println("json msg: $text")
         try {
             val msgList = Gson().fromJson<List<ChatMessage>>(text, object : TypeToken<List<ChatMessage>?>() {}.type)
@@ -92,6 +96,7 @@ class ChatServer {
      * We received a message. Let's process it.
      */
     suspend fun checkCommands(id: String, text: String) {
+        KLogger.d { "receivedMessage, command: $text, id: $id" }
         println("receivedMessage, command: $text, id: $id")
         // We are going to handle commands (text starting with '/') and normal messages
         when {
@@ -138,7 +143,7 @@ class ChatServer {
             to,
             ChatMessage.MESSAGE,
             "Member renamed from $oldName to $to",
-            DateTime.nowUnixLong()
+            Clock.System.now().toEpochMilliseconds()
         )
         broadcast(msg)
     }
@@ -160,7 +165,7 @@ class ChatServer {
                 name,
                 ChatMessage.LOGOUT,
                 "${memberIds[member]!!} logged out",
-                DateTime.nowUnixLong()
+                Clock.System.now().toEpochMilliseconds()
             )
             broadcast(msg)
         }
@@ -173,7 +178,7 @@ class ChatServer {
         // Pre-format the message to be send, to prevent doing it for all the users or connected sockets.
         val name = memberNames[sender]
         if (!name.isNullOrEmpty()) {
-            println("name is not null")
+            KLogger.d { "name is not null" }
 
             // Sends this pre-formatted message to all the members in the server.
             val msg = ChatMessage(
@@ -181,7 +186,7 @@ class ChatServer {
                 name,
                 ChatMessage.REPLY,
                 message,
-                DateTime.nowUnixLong()
+                Clock.System.now().toEpochMilliseconds()
             )
             broadcast(msg)
 
@@ -194,7 +199,7 @@ class ChatServer {
                 }
             }
         } else {
-            println("name IS null")
+            KLogger.d { "name IS null" }
         }
     }
 
@@ -207,7 +212,7 @@ class ChatServer {
             memberNames[sender]!!,
             ChatMessage.MESSAGE,
             memberNames.values.joinToString(prefix = "[server::who] "),
-            DateTime.nowUnixLong()
+            Clock.System.now().toEpochMilliseconds()
         )
         members[sender]?.send(Frame.Text(Gson().toJson(message).toString()))
     }
@@ -221,7 +226,7 @@ class ChatServer {
             memberNames[sender]!!,
             ChatMessage.MESSAGE,
             "[server::help] Possible commands are: /user, /help and /who",
-            DateTime.nowUnixLong()
+            Clock.System.now().toEpochMilliseconds()
         )
         members[sender]?.send(Frame.Text(Gson().toJson(message).toString()))
     }
@@ -237,7 +242,7 @@ class ChatServer {
             memberNames[sender]!!,
             ChatMessage.MESSAGE,
             message,
-            DateTime.nowUnixLong()
+            Clock.System.now().toEpochMilliseconds()
         )
 
         members[recipient]?.send(Frame.Text(Gson().toJson(msg).toString()))
