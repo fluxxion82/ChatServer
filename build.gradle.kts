@@ -6,8 +6,8 @@ buildscript {
         maven { setUrl ("https://plugins.gradle.org/m2/") }
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.5.10")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
+        //classpath("org.jetbrains.kotlin:kotlin-serialization:1.5.21")
         classpath("com.android.tools.build:gradle:4.2.2")
     }
 }

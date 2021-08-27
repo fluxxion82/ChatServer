@@ -1,6 +1,5 @@
 include ':app'
-//include ':javalogger'
-include ':presentation:web'
+//include ':presentation:web'
 
 include ':domain', ':kinject'
 include ':logging:logger'
